@@ -1,0 +1,21 @@
+{
+  "name": "Notas de Gastos",
+  "short_name": "Gastos",
+  "description": "Aplicativo para anotar e somar gastos automaticamente",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#1f2937",
+  "theme_color": "#1f2937",
+  "icons": [
+    {
+      "src": "https://via.placeholder.com/192",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://via.placeholder.com/512",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
