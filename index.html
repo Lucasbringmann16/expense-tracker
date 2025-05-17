@@ -45,47 +45,46 @@
   <title>Notas de Gastos</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
   <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#0f172a">
+  <meta name="theme-color" content="#0a1d37">
   <link rel="icon" href="https://via.placeholder.com/192" sizes="192x192">
   <link rel="apple-touch-icon" href="https://via.placeholder.com/192">
   <style>
     body {
-      background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
-      color: #f1f5f9;
+      background: linear-gradient(135deg, #0a1d37 0%, #3b1e54 100%);
+      color: #f5f7fa;
       transition: all 0.3s ease;
     }
-    .elegant-input {
-      background: #1e293b;
-      border: 1px solid #38bdf8;
-      color: #f1f5f9;
-      box-shadow: 0 0 6px rgba(56, 189, 248, 0.2);
+    .premium-input {
+      background: #1e2a44;
+      border: 1px solid #4f9cff;
+      color: #f5f7fa;
+      box-shadow: 0 0 6px rgba(79, 156, 255, 0.2);
       transition: box-shadow 0.2s ease;
     }
-    .elegant-input:focus {
-      box-shadow: 0 0 10px rgba(56, 189, 248, 0.4);
+    .premium-input:focus {
+      box-shadow: 0 0 10px rgba(79, 156, 255, 0.4);
       outline: none;
     }
-    .elegant-btn {
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    .premium-btn {
+      box-shadow: 0 0 6px rgba(79, 156, 255, 0.2);
       transition: all 0.2s ease;
     }
-    .elegant-btn:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    .premium-btn:hover {
+      box-shadow: 0 0 10px rgba(79, 156, 255, 0.4);
     }
     .dark-mode .bg-white {
-      background: #1e293b;
+      background: #1e2a44;
     }
     .dark-mode .bg-gray-100 {
-      background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+      background: linear-gradient(135deg, #0a1d37 0%, #3b1e54 100%);
     }
     .dark-mode .text-gray-800 {
-      color: #f1f5f9;
+      color: #a3bffa;
     }
     .dropdown-menu {
-      background: #1e293b;
-      border: 1px solid #38bdf8;
-      box-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
+      background: #1e2a44;
+      border: 1px solid #4f9cff;
+      box-shadow: 0 0 10px rgba(79, 156, 255, 0.3);
     }
   </style>
 </head>
@@ -93,7 +92,7 @@
   <div class="container mx-auto p-4 max-w-2xl relative">
     <!-- Ícone de Configurações -->
     <div class="absolute top-4 right-4">
-      <button id="settingsBtn" class="text-#f1f5f9 hover:text-#38bdf8">
+      <button id="settingsBtn" class="text-#a3bffa hover:text-#4f9cff">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
@@ -102,19 +101,19 @@
       <div id="settingsMenu" class="hidden dropdown-menu absolute right-0 mt-2 w-48 rounded-md shadow-lg z-10">
         <div class="px-4 py-2">
           <label class="flex items-center space-x-2">
-            <input id="darkModeToggle" type="checkbox" class="form-checkbox text-#38bdf8">
+            <input id="darkModeToggle" type="checkbox" class="form-checkbox text-#4f9cff">
             <span>Modo Escuro</span>
           </label>
         </div>
       </div>
     </div>
-    <h1 class="text-2xl font-bold text-#f1f5f9 mb-4">Notas de Gastos</h1>
+    <h1 class="text-2xl font-bold text-#a3bffa mb-4">Notas de Gastos</h1>
     <div class="mb-4">
-      <textarea id="noteInput" class="w-full p-2 elegant-input rounded-md" rows="6" placeholder="Digite seus gastos... (use espaços para subitens)"></textarea>
-      <button id="saveBtn" class="mt-2 bg-#3b82f6 text-#f1f5f9 px-4 py-2 rounded-md elegant-btn hover:bg-#60a5fa">Salvar</button>
+      <textarea id="noteInput" class="w-full p-2 premium-input rounded-md" rows="6" placeholder="Digite seus gastos... (use espaços para subitens)"></textarea>
+      <button id="saveBtn" class="mt-2 bg-#4f9cff text-#f5f7fa px-4 py-2 rounded-md premium-btn hover:bg-#7bb8ff">Salvar</button>
     </div>
     <div id="notesList" class="space-y-2"></div>
-    <div class="mt-4 text-lg font-semibold text-#f1f5f9">
+    <div class="mt-4 text-lg font-semibold text-#a3bffa">
       Total: R$ <span id="totalAmount">0,00</span>
     </div>
   </div>
@@ -124,7 +123,9 @@
     const saveBtn = document.getElementById('saveBtn');
     const notesList = document.getElementById('notesList');
     const totalAmount = document.getElementById('totalAmount');
-    const settingsBtn = document.getElementBy trois à la fois: a primary item with subitems, and the subitems are indented. The total should only include the subitems if the primary item doesn't have a value, but if the primary item has a value, only include that and ignore the subitem values.
+    const settingsBtn = document.getElementById('settingsBtn');
+    const settingsMenu = document.getElementById('settingsMenu');
+    const darkModeToggle = document.getElementById('darkModeToggle');
 
     // Carrega estado do modo escuro
     const isDarkMode = localStorage.getItem('darkMode') === 'true';
@@ -198,7 +199,7 @@
       notes.forEach((note, mainIndex) => {
         total += renderNote(note, mainIndex, 0);
         note.subitems.forEach((subitem, subIndex) => {
-          renderNote(subitem, `${mainIndex}-${subIndex}`, mainIndex + 1, true, note);
+          total += renderNote(subitem, `${mainIndex}-${subIndex}`, mainIndex + 1, true, note);
         });
       });
 
@@ -208,7 +209,7 @@
     // Renderiza um único item
     function renderNote(note, index, mainIndex, isSubitem = false, parentNote = null) {
       const div = document.createElement('div');
-      div.className = `flex items-center p-2 bg-white dark:bg-#1e293b rounded-md shadow-sm ${isSubitem ? 'ml-6' : ''}`;
+      div.className = `flex items-center p-2 bg-white dark:bg-#1e2a44 rounded-md shadow-sm ${isSubitem ? 'ml-6' : ''}`;
 
       const valueMatch = note.text.match(/R\$\s*([\d,.]+)/);
       const value = valueMatch ? parseFloat(valueMatch[1].replace(',', '.')) : 0;
@@ -216,7 +217,7 @@
       const input = document.createElement('input');
       input.type = 'text';
       input.value = note.text;
-      input.className = 'flex-1 p-1 elegant-input rounded-md';
+      input.className = 'flex-1 p-1 premium-input rounded-md';
       input.addEventListener('blur', () => {
         if (isSubitem) {
           notes[mainIndex].subitems[index.split('-')[1]].text = input.value.trim();
@@ -231,7 +232,7 @@
 
       const paidBtn = document.createElement('button');
       paidBtn.textContent = note.paid ? 'Desmarcar' : 'Pago';
-      paidBtn.className = `ml-2 px-3 py-1 rounded-md elegant-btn ${note.paid ? 'bg-#6b7280' : 'bg-#10b981'} text-#f1f5f9`;
+      paidBtn.className = `ml-2 px-3 py-1 rounded-md premium-btn ${note.paid ? 'bg-#4b5e77' : 'bg-#34c759'} text-#f5f7fa`;
       paidBtn.addEventListener('click', () => {
         if (isSubitem) {
           notes[mainIndex].subitems[index.split('-')[1]].paid = !notes[mainIndex].subitems[index.split('-')[1]].paid;
@@ -246,7 +247,7 @@
 
       const deleteBtn = document.createElement('button');
       deleteBtn.textContent = 'Excluir';
-      deleteBtn.className = 'ml-2 px-3 py-1 bg-#ef4444 text-#f1f5f9 rounded-md elegant-btn hover:bg-#f87171';
+      deleteBtn.className = 'ml-2 px-3 py-1 bg-#ff6b6b text-#f5f7fa rounded-md premium-btn';
       deleteBtn.addEventListener('click', () => {
         if (isSubitem) {
           notes[mainIndex].subitems.splice(index.split('-')[1], 1);
@@ -262,17 +263,7 @@
       div.appendChild(deleteBtn);
       notesList.appendChild(div);
 
-      // Calcula valor para soma
-      if (!note.paid) {
-        if (!isSubitem) {
-          // Para itens principais, use o valor do item principal se existir
-          return value || 0;
-        } else if (!parentNote.text.match(/R\$\s*([\d,.]+)/)) {
-          // Para subitens, use o valor do subitem apenas se o item principal não tiver valor
-          return value || 0;
-        }
-      }
-      return 0;
+      return !note.paid && value ? value : 0;
     }
 
     // Registra Service Worker para PWA
