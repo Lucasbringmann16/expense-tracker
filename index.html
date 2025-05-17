@@ -53,7 +53,7 @@
   <div class="container mx-auto p-4 max-w-2xl">
     <h1 class="text-2xl font-bold text-gray-800 mb-4">Notas de Gastos</h1>
     <div class="mb-4">
-      <textarea id="noteInput" class="w-full p-2 border rounded-md" rows="6" placeholder="Digite seus gastos..."></textarea>
+      <textarea id="noteInput" class="w-full p-2 border rounded-md" rows="6" placeholder="Digite seus gastos... (use espaços para subitens)"></textarea>
       <button id="saveBtn" class="mt-2 bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Salvar</button>
     </div>
     <div id="notesList" class="space-y-2"></div>
@@ -72,78 +72,123 @@
     let notes = JSON.parse(localStorage.getItem('notes')) || [];
     renderNotes();
 
-    // Salva nova nota
+    // Salva novas notas
     saveBtn.addEventListener('click', () => {
       const text = noteInput.value.trim();
       if (text) {
-        notes = text.split('\n').map(line => ({
-          text: line.trim(),
-          paid: line.includes('✅')
-        }));
+        notes = parseNotes(text);
         localStorage.setItem('notes', JSON.stringify(notes));
         noteInput.value = '';
         renderNotes();
       }
     });
 
+    // Parseia texto em notas hierárquicas
+    function parseNotes(text) {
+      const lines = text.split('\n').map(line => line.trimEnd());
+      const result = [];
+      let currentMain = null;
+
+      lines.forEach(line => {
+        if (!line) return;
+        const isSubitem = line.match(/^\s+/);
+        const cleanLine = line.trim();
+        const paid = cleanLine.includes('✅');
+        const text = cleanLine.replace(' ✅', '');
+
+        if (!isSubitem) {
+          currentMain = { text, paid, subitems: [] };
+          result.push(currentMain);
+        } else if (currentMain) {
+          currentMain.subitems.push({ text, paid });
+        }
+      });
+
+      return result;
+    }
+
     // Renderiza notas
     function renderNotes() {
       notesList.innerHTML = '';
       let total = 0;
 
-      notes.forEach((note, index) => {
-        const div = document.createElement('div');
-        div.className = 'flex items-center p-2 bg-white rounded-md shadow-sm';
+      notes.forEach((note, mainIndex) => {
+        // Renderiza gasto principal
+        total += renderNote(note, mainIndex, 0);
 
-        // Extrai valor monetário (ex.: R$ 150,00)
-        const valueMatch = note.text.match(/R\$\s*([\d,.]+)/);
-        const value = valueMatch ? parseFloat(valueMatch[1].replace(',', '.')) : 0;
-
-        // Campo de texto editável
-        const input = document.createElement('input');
-        input.type = 'text';
-        input.value = note.text.replace(' ✅', '');
-        input.className = 'flex-1 p-1 border rounded-md';
-        input.addEventListener('blur', () => {
-          notes[index].text = input.value.trim() + (note.paid ? ' ✅' : '');
-          localStorage.setItem('notes', JSON.stringify(notes));
-          renderNotes();
+        // Renderiza subitens
+        note.subitems.forEach((subitem, subIndex) => {
+          total += renderNote(subitem, `${mainIndex}-${subIndex}`, mainIndex + 1, true, note);
         });
-
-        // Botão de pago
-        const paidBtn = document.createElement('button');
-        paidBtn.textContent = note.paid ? 'Desmarcar' : 'Pago';
-        paidBtn.className = `ml-2 px-3 py-1 rounded-md ${note.paid ? 'bg-gray-400' : 'bg-green-500'} text-white`;
-        paidBtn.addEventListener('click', () => {
-          notes[index].paid = !note.paid;
-          notes[index].text = notes[index].text.replace(' ✅', '') + (notes[index].paid ? ' ✅' : '');
-          localStorage.setItem('notes', JSON.stringify(notes));
-          renderNotes();
-        });
-
-        // Botão de excluir
-        const deleteBtn = document.createElement('button');
-        deleteBtn.textContent = 'Excluir';
-        deleteBtn.className = 'ml-2 px-3 py-1 bg-red-500 text-white rounded-md';
-        deleteBtn.addEventListener('click', () => {
-          notes.splice(index, 1);
-          localStorage.setItem('notes', JSON.stringify(notes));
-          renderNotes();
-        });
-
-        div.appendChild(input);
-        div.appendChild(paidBtn);
-        div.appendChild(deleteBtn);
-        notesList.appendChild(div);
-
-        // Calcula total (exclui pagos)
-        if (!note.paid && value) {
-          total += value;
-        }
       });
 
       // Formata total
       totalAmount.textContent = total.toFixed(2).replace('.', ',');
+    }
+
+    // Renderiza um único item (principal ou subitem)
+    function renderNote(note, index, mainIndex, isSubitem = false, parentNote = null) {
+      const div = document.createElement('div');
+      div.className = `flex items-center p-2 bg-white rounded-md shadow-sm ${isSubitem ? 'ml-6' : ''}`;
+
+      // Extrai valor monetário
+      const valueMatch = note.text.match(/R\$\s*([\d,.]+)/);
+      const value = valueMatch ? parseFloat(valueMatch[1].replace(',', '.')) : 0;
+
+      // Campo de texto editável
+      const input = document.createElement('input');
+      input.type = 'text';
+      input.value = note.text;
+      input.className = 'flex-1 p-1 border rounded-md';
+      input.addEventListener('blur', () => {
+        if (isSubitem) {
+          notes[mainIndex].subitems[index.split('-')[1]].text = input.value.trim();
+          notes[mainIndex].subitems[index.split('-')[1]].paid = input.value.includes('✅');
+        } else {
+          notes[index].text = input.value.trim();
+          notes[index].paid = input.value.includes('✅');
+        }
+        localStorage.setItem('notes', JSON.stringify(notes));
+        renderNotes();
+      });
+
+      // Botão de pago
+      const paidBtn = document.createElement('button');
+      paidBtn.textContent = note.paid ? 'Desmarcar' : 'Pago';
+      paidBtn.className = `ml-2 px-3 py-1 rounded-md ${note.paid ? 'bg-gray-400' : 'bg-green-500'} text-white`;
+      paidBtn.addEventListener('click', () => {
+        if (isSubitem) {
+          notes[mainIndex].subitems[index.split('-')[1]].paid = !notes[mainIndex].subitems[index.split('-')[1]].paid;
+          notes[mainIndex].subitems[index.split('-')[1]].text = notes[mainIndex].subitems[index.split('-')[1]].text.replace(' ✅', '') + (notes[mainIndex].subitems[index.split('-')[1]].paid ? ' ✅' : '');
+        } else {
+          notes[index].paid = !notes[index].paid;
+          notes[index].text = notes[index].text.replace(' ✅', '') + (notes[index].paid ? ' ✅' : '');
+        }
+        localStorage.setItem('notes', JSON.stringify(notes));
+        renderNotes();
+      });
+
+      // Botão de excluir
+      const deleteBtn = document.createElement('button');
+      deleteBtn.textContent = 'Excluir';
+      deleteBtn.className = 'ml-2 px-3 py-1 bg-red-500 text-white rounded-md';
+      deleteBtn.addEventListener('click', () => {
+        if (isSubitem) {
+          notes[mainIndex].subitems.splice(index.split('-')[1], 1);
+        } else {
+          notes.splice(index, 1);
+        }
+        localStorage.setItem('notes', JSON.stringify(notes));
+        renderNotes();
+      });
+
+      div.appendChild(input);
+      div.appendChild(paidBtn);
+      div.appendChild(deleteBtn);
+      notesList.appendChild(div);
+
+      // Retorna valor para soma (exclui pagos)
+      return !note.paid && value ? value : 0;
     }
 
     // Registra Service Worker para PWA
